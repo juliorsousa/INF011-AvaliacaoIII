@@ -35,8 +35,7 @@ public class TornarUrgenteCommand implements Command {
 
   @Override
   public void redo() {
-    this.manager.atualizarRepositorio(this.previous, this.current);
-    this.manager.setDocumentoAtual(this.current);
+    this.execute();
   }
 
   @Override

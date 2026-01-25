@@ -75,6 +75,15 @@ public class DocumentHistory {
     composedRawLog(content);
   }
 
+  public void logCommandExecuted(Command command) {
+    String content = String.format(
+        "Executado: %s%n",
+        command
+    );
+
+    composedRawLog(content);
+  }
+
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss.SSS");
 
   private void composedRawLog(String content) {

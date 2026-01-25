@@ -21,6 +21,8 @@ public class CommandContext {
 
     command.execute();
 
+    this.history.logCommandExecuted(command);
+
     this.getUndoStack(documento).push(command);
     this.getRedoStack(documento).clear();
   }
@@ -30,6 +32,9 @@ public class CommandContext {
 
     this.getUndoStack(documento).clear();
     this.getRedoStack(documento).clear();
+
+    this.undoMappings.remove(documento.getNumero());
+    this.redoMappings.remove(documento.getNumero());
   }
 
   public void undo(Documento documento) {

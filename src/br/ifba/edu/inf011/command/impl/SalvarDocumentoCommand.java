@@ -1,6 +1,7 @@
 package br.ifba.edu.inf011.command.impl;
 
 import br.ifba.edu.inf011.command.Command;
+import br.ifba.edu.inf011.decorator.AssinaturaDecorator;
 import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
 import br.ifba.edu.inf011.model.documentos.Documento;
@@ -14,20 +15,20 @@ public class SalvarDocumentoCommand implements Command {
   protected String newContent;
   protected String previousContent;
 
-  public SalvarDocumentoCommand(GerenciadorDocumentoModel manager, Documento documento, String currentContent) throws FWDocumentException {
+  public SalvarDocumentoCommand(GerenciadorDocumentoModel manager, Documento documento, String newContent) throws FWDocumentException {
     this.manager = manager;
 
     this.documento = documento;
 
     this.previousContent = documento.getConteudo();
-    this.newContent = currentContent;
+    this.newContent = newContent;
   }
 
   @Override
   public void execute() {
-//    if (this.documento  instanceof AssinaturaDecorator) { TODO: ESPERAR VALIDAÇÃO DE REQUISITO
-//      throw new IllegalStateException("Não é possível editar um documento assinado.");
-//    }
+    if (this.documento instanceof AssinaturaDecorator) { // TODO: ESPERAR VALIDAÇÃO DE REQUISITO
+      throw new IllegalStateException("Não é possível editar um documento assinado.");
+    }
 
     this.documento.setConteudo(newContent);
     this.manager.setDocumentoAtual(this.documento);

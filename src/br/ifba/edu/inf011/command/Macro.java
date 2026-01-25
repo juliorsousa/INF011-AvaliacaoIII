@@ -19,12 +19,14 @@ public class Macro implements Command {
 
   @Override
   public void undo() {
-    for (Command command : commands) command.undo();
+    for (int i = commands.size() - 1; i >= 0; i--) {
+      commands.get(i).undo();
+    }
   }
 
   @Override
   public void redo() {
-    for (Command command : commands) command.redo();
+    for (Command command : commands) command.execute();
   }
 
   @Override
