@@ -5,7 +5,7 @@ import br.ifba.edu.inf011.model.documentos.Documento;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class CommandContext {
+public class CommandContext { // Command: Invoker
 
   protected static CommandContext INSTANCE = null;
 

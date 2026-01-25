@@ -2,7 +2,7 @@ package br.ifba.edu.inf011.command;
 
 import java.util.List;
 
-public class Macro implements Command {
+public class Macro implements Command { // Command: Macro AbstractCommand | Composite: Composite
 
   private final List<Command> commands;
 

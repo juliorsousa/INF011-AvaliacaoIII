@@ -1,43 +1,44 @@
 package br.ifba.edu.inf011.command.impl;
 
+import br.ifba.edu.inf011.command.AbstractDocumentCommand;
 import br.ifba.edu.inf011.command.Command;
 import br.ifba.edu.inf011.decorator.AssinaturaDecorator;
 import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
-import br.ifba.edu.inf011.model.documentos.Documento;
 
-public class SalvarDocumentoCommand implements Command {
+public class SalvarDocumentoCommand extends AbstractDocumentCommand implements Command { // Command: ConcreteCommand
 
-  protected final GerenciadorDocumentoModel manager;
-
-  protected Documento documento;
-
-  protected String newContent;
   protected String previousContent;
+  protected String newContent;
 
-  public SalvarDocumentoCommand(GerenciadorDocumentoModel manager, Documento documento, String newContent) throws FWDocumentException {
-    this.manager = manager;
+  public SalvarDocumentoCommand(GerenciadorDocumentoModel manager, String newContent) {
+    super(manager);
 
-    this.documento = documento;
-
-    this.previousContent = documento.getConteudo();
     this.newContent = newContent;
   }
 
   @Override
   public void execute() {
-    if (this.documento instanceof AssinaturaDecorator) { // TODO: ESPERAR VALIDAÇÃO DE REQUISITO
-      throw new IllegalStateException("Não é possível editar um documento assinado.");
-    }
+    try {
+      this.previous = this.getDocumentoAtual();
+      this.previousContent = this.previous.getConteudo();
 
-    this.documento.setConteudo(newContent);
-    this.manager.setDocumentoAtual(this.documento);
+      this.current = this.previous;
+
+      if (this.previous instanceof AssinaturaDecorator) { // TODO: ESPERAR VALIDAÇÃO DE REQUISITO
+        throw new IllegalStateException("Não é possível editar um documento assinado.");
+      }
+
+      this.previous.setConteudo(newContent);
+    } catch (FWDocumentException e) {
+      throw new RuntimeException("Erro ao salvar o documento: " + e.getMessage(), e);
+    }
   }
 
   @Override
   public void undo() {
-    this.documento.setConteudo(previousContent);
-    this.manager.setDocumentoAtual(this.documento);
+    this.current.setConteudo(previousContent);
+    this.setDocumentoAtual(this.current);
   }
 
   @Override
@@ -47,10 +48,13 @@ public class SalvarDocumentoCommand implements Command {
 
   @Override
   public String toString() {
+    Integer previousContentLength =
+        this.previousContent != null ? this.previousContent.length() : 0;
+
     return String.format(
         "Documento '%s' teve seu conteúdo alterado. (%d -> %d caracteres)",
-        this.documento.getNumero(),
-        this.previousContent != null ? this.previousContent.length() : 0,
+        this.getDocumentoAtual().getNumero(),
+        previousContentLength,
         this.newContent.length()
     );
   }

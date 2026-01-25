@@ -16,7 +16,7 @@ import br.ifba.edu.inf011.strategy.NameGeneratingStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GerenciadorDocumentoModel {
+public class GerenciadorDocumentoModel { // Command: Receiver
 
   private final DocumentHistory history = DocumentHistory.getInstance();
   private final CommandContext commandContext = CommandContext.getInstance();
@@ -58,7 +58,7 @@ public class GerenciadorDocumentoModel {
   }
 
   public void salvarDocumento(Documento doc, String conteudo) throws Exception {
-    commandContext.addCommand(doc, new SalvarDocumentoCommand(this, doc, conteudo));
+    commandContext.addCommand(doc, new SalvarDocumentoCommand(this, conteudo));
   }
 
   public void assinarDocumento(Documento doc) throws FWDocumentException {
@@ -67,7 +67,7 @@ public class GerenciadorDocumentoModel {
     Operador operador = factory.getOperador();
     operador.inicializar("jdc", "João das Couves");
 
-    Command assinarCommand = new AssinarDocumentoCommand(this, doc, operador);
+    Command assinarCommand = new AssinarDocumentoCommand(this, operador);
 
     commandContext.addCommand(doc, assinarCommand);
   }
@@ -75,7 +75,7 @@ public class GerenciadorDocumentoModel {
   public void protegerDocumento(Documento doc) throws FWDocumentException {
     if (doc == null) return;
 
-    Command protegerCommand = new ProtegerDocumentoCommand(this, doc);
+    Command protegerCommand = new ProtegerDocumentoCommand(this);
 
     commandContext.addCommand(doc, protegerCommand);
   }
@@ -83,7 +83,7 @@ public class GerenciadorDocumentoModel {
   public void tornarUrgente(Documento doc) throws FWDocumentException {
     if (doc == null) return;
 
-    Command tornarUrgenteCommand = new TornarUrgenteCommand(this, doc);
+    Command tornarUrgenteCommand = new TornarUrgenteCommand(this);
 
     commandContext.addCommand(doc, tornarUrgenteCommand);
   }
@@ -94,7 +94,7 @@ public class GerenciadorDocumentoModel {
     Operador operador = factory.getOperador();
     operador.inicializar("jdc", "João das Couves");
 
-    Command macro = new PriorizarMacro(this, doc, operador);
+    Command macro = new PriorizarMacro(this, operador);
     commandContext.addCommand(doc, macro);
   }
 
@@ -104,7 +104,7 @@ public class GerenciadorDocumentoModel {
     Operador operador = factory.getOperador();
     operador.inicializar("jdc", "João das Couves");
 
-    Command macro = new SalvarEAssinarMacro(this, doc, conteudo, operador);
+    Command macro = new SalvarEAssinarMacro(this, conteudo, operador);
     commandContext.addCommand(doc, macro);
   }
 

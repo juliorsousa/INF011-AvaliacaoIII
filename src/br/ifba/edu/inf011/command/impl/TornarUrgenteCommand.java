@@ -1,36 +1,32 @@
 package br.ifba.edu.inf011.command.impl;
 
+import br.ifba.edu.inf011.command.AbstractDocumentCommand;
 import br.ifba.edu.inf011.command.Command;
 import br.ifba.edu.inf011.decorator.SeloUrgenciaDecorator;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
-import br.ifba.edu.inf011.model.documentos.Documento;
 
-public class TornarUrgenteCommand implements Command {
+public class TornarUrgenteCommand extends AbstractDocumentCommand implements Command { // Command: ConcreteCommand
 
-  private final GerenciadorDocumentoModel manager;
-
-  protected Documento previous;
-  protected Documento current;
-
-  public TornarUrgenteCommand(GerenciadorDocumentoModel manager, Documento documento) {
-    this.manager = manager;
-
-    this.previous = documento;
-    this.current = documento;
+  public TornarUrgenteCommand(GerenciadorDocumentoModel manager) {
+    super(manager);
   }
 
   @Override
   public void execute() {
+    this.previous = this.getDocumentoAtual();
+
+    System.out.println("[Urgencia] Classe do documento antes de tornar urgente: " + this.previous.getClass().getSimpleName());
     this.current = new SeloUrgenciaDecorator(this.previous);
 
-    this.manager.atualizarRepositorio(this.previous, this.current);
-    this.manager.setDocumentoAtual(this.current);
+    this.atualizarRepositorio(this.previous, this.current);
+    this.setDocumentoAtual(this.current);
+    System.out.println("[Urgencia] Classe do documento após tornar urgente: " + this.current.getClass().getSimpleName());
   }
 
   @Override
   public void undo() {
-    this.manager.atualizarRepositorio(this.current, this.previous);
-    this.manager.setDocumentoAtual(this.previous);
+    this.atualizarRepositorio(this.current, this.previous);
+    this.setDocumentoAtual(this.previous);
   }
 
   @Override
@@ -42,7 +38,7 @@ public class TornarUrgenteCommand implements Command {
   public String toString() {
     return String.format(
         "Documento '%s' se tornou urgente.",
-        this.current.getNumero()
+        this.getDocumentoAtual().getNumero()
     );
   }
 
