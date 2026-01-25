@@ -8,8 +8,9 @@ import br.ifba.edu.inf011.model.documentos.Documento;
 import br.ifba.edu.inf011.model.operador.Operador;
 import br.ifba.edu.inf011.proxy.DocumentoConfidencial;
 
+@Deprecated
 public class GestorDocumento {
-	
+
 	public Documento assinar(Documento documento, Operador operador) {
 		Assinatura assinatura = new Assinatura(operador, LocalDateTime.now());
 		Documento assinado = new AssinaturaDecorator(documento, assinatura);
@@ -19,9 +20,9 @@ public class GestorDocumento {
 	public Documento proteger(Documento documento) {
 		return new DocumentoConfidencial(documento);
 	}	
-	
-	
+
 	public Documento tornarUrgente(Documento documento) {
 		return new SeloUrgenciaDecorator(documento);
-	}	
+	}
+
 }
