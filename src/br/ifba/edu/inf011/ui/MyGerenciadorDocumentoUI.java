@@ -3,7 +3,7 @@ package br.ifba.edu.inf011.ui;
 import br.ifba.edu.inf011.af.DocumentOperatorFactory;
 import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.documentos.Privacidade;
-import br.ifba.edu.inf011.strategy.NameGeneratingStrategy;
+import br.ifba.edu.inf011.strategy.NameGenerator;
 import javax.swing.JOptionPane;
 
 public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI {
@@ -126,7 +126,7 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI {
 
   private void criarDocumento(Privacidade privacidade) {
     try {
-      NameGeneratingStrategy tipo = this.barraSuperior.getSelected();
+      NameGenerator tipo = this.barraSuperior.getSelected();
       this.atual = this.controller.criarDocumento(tipo, privacidade);
       this.barraDocs.addDoc("[" + atual.getNumero() + "]");
       this.refreshUI();
@@ -134,6 +134,5 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI {
       JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
     }
   }
-
 
 }

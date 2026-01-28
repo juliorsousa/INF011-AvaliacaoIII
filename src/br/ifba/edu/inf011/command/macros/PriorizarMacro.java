@@ -25,4 +25,5 @@ public class PriorizarMacro extends Macro implements Command { // Command: Macro
         "Macro: Priorizar [%s]", super.toString()
     );
   }
+
 }
