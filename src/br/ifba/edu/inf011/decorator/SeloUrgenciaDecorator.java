@@ -4,14 +4,21 @@ import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.documentos.Documento;
 
 public class SeloUrgenciaDecorator extends DocumentoDecorator {
-	
-    public SeloUrgenciaDecorator(Documento d) {
-    	super(d); 
-    }
-    
-	@Override
-	public String getConteudo() throws FWDocumentException{
-		return "[URGENTE]\n" + super.getConteudo();
-	}    
+
+  public SeloUrgenciaDecorator(Documento d) {
+    super(d);
+  }
+
+  @Override
+  public void setConteudo(String conteudo) {
+    String regexSelo = "^\\[URGENTE]\\n";
+    String conteudoLimpo = conteudo.replaceAll(regexSelo, "");
+    super.setConteudo(conteudoLimpo);
+  }
+
+  @Override
+  public String getConteudo() throws FWDocumentException {
+    return "[URGENTE]\n" + super.getConteudo();
+  }
 
 }

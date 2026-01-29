@@ -2,7 +2,6 @@ package br.ifba.edu.inf011.command.impl;
 
 import br.ifba.edu.inf011.command.AbstractDocumentCommand;
 import br.ifba.edu.inf011.command.Command;
-import br.ifba.edu.inf011.decorator.AssinaturaDecorator;
 import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
 
@@ -24,10 +23,6 @@ public class SalvarDocumentoCommand extends AbstractDocumentCommand implements C
       this.previousContent = this.previous.getConteudo();
 
       this.current = this.previous;
-
-      if (this.previous instanceof AssinaturaDecorator) { // TODO: ESPERAR VALIDAÇÃO DE REQUISITO
-        throw new IllegalStateException("Não é possível editar um documento assinado.");
-      }
 
       this.previous.setConteudo(newContent);
     } catch (FWDocumentException e) {

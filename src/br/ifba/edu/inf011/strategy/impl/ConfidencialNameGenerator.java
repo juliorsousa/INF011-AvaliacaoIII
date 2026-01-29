@@ -1,8 +1,9 @@
-package br.ifba.edu.inf011.strategy;
+package br.ifba.edu.inf011.strategy.impl;
 
 import br.ifba.edu.inf011.model.documentos.Documento;
+import br.ifba.edu.inf011.strategy.AbstractNameGenerator;
 
-public class ConfidencialNameGenerator extends AbstractNameGeneratingStrategy { // Strategy: Concrete Strategy
+public class ConfidencialNameGenerator extends AbstractNameGenerator { // Strategy: Concrete Strategy
 
   @Override
   public String generateName(Documento documento) {
@@ -13,4 +14,5 @@ public class ConfidencialNameGenerator extends AbstractNameGeneratingStrategy { 
   public String getStrategyName() {
     return "Confidencial";
   }
+
 }

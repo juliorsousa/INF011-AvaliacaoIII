@@ -1,12 +1,12 @@
 package br.ifba.edu.inf011.model;
 
-import br.ifba.edu.inf011.strategy.NameGeneratingStrategy;
+import br.ifba.edu.inf011.strategy.NameGenerator;
 
 import br.ifba.edu.inf011.model.documentos.Documento;
 
-public class Autenticador {
+public class Autenticador { // Strategy: Context
 	
-	public void autenticar(NameGeneratingStrategy strategy, Documento documento) { // Strategy: Context
+	public void autenticar(NameGenerator strategy, Documento documento) {
     documento.setNumero(strategy.generateName(documento));
 	}
 

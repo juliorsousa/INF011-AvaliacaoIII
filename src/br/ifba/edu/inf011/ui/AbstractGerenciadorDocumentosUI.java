@@ -3,11 +3,11 @@ package br.ifba.edu.inf011.ui;
 import br.ifba.edu.inf011.af.DocumentOperatorFactory;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
 import br.ifba.edu.inf011.model.documentos.Documento;
-import br.ifba.edu.inf011.strategy.ConfidencialNameGenerator;
-import br.ifba.edu.inf011.strategy.CriminalNameGenerator;
-import br.ifba.edu.inf011.strategy.ExportacaoNameGenerator;
-import br.ifba.edu.inf011.strategy.NameGeneratingStrategy;
-import br.ifba.edu.inf011.strategy.PessoalNameGenerator;
+import br.ifba.edu.inf011.strategy.impl.ConfidencialNameGenerator;
+import br.ifba.edu.inf011.strategy.impl.CriminalNameGenerator;
+import br.ifba.edu.inf011.strategy.impl.ExportacaoNameGenerator;
+import br.ifba.edu.inf011.strategy.NameGenerator;
+import br.ifba.edu.inf011.strategy.impl.PessoalNameGenerator;
 import java.awt.BorderLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -18,11 +18,11 @@ import javax.swing.event.ListSelectionListener;
 public abstract class AbstractGerenciadorDocumentosUI extends JFrame implements ListSelectionListener { // Strategy: Client, Command: Client
 
   protected GerenciadorDocumentoModel controller;
-  protected JPanelBarraSuperior<NameGeneratingStrategy> barraSuperior;
+  protected JPanelBarraSuperior<NameGenerator> barraSuperior;
   protected JPanelAreaEdicao areaEdicao;
   protected JPanelListaDocumentos<String> barraDocs;
 
-  protected NameGeneratingStrategy[] tipos = {new CriminalNameGenerator(), new PessoalNameGenerator(), new ExportacaoNameGenerator(), new ConfidencialNameGenerator()};
+  protected NameGenerator[] tipos = {new CriminalNameGenerator(), new PessoalNameGenerator(), new ExportacaoNameGenerator(), new ConfidencialNameGenerator()};
 
   protected Documento atual;
   protected DefaultListModel<String> listDocs;
@@ -31,7 +31,7 @@ public abstract class AbstractGerenciadorDocumentosUI extends JFrame implements 
   public AbstractGerenciadorDocumentosUI(DocumentOperatorFactory factory) {
     this.controller = new GerenciadorDocumentoModel(factory);
     this.listDocs = new DefaultListModel<String>();
-    this.barraSuperior = new JPanelBarraSuperior<NameGeneratingStrategy>(tipos);
+    this.barraSuperior = new JPanelBarraSuperior<NameGenerator>(tipos);
     this.areaEdicao = new JPanelAreaEdicao();
     this.barraDocs = new JPanelListaDocumentos<String>(this.listDocs, this);
     this.montarAparencia();

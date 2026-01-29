@@ -12,7 +12,7 @@ import br.ifba.edu.inf011.command.macros.SalvarEAssinarMacro;
 import br.ifba.edu.inf011.model.documentos.Documento;
 import br.ifba.edu.inf011.model.documentos.Privacidade;
 import br.ifba.edu.inf011.model.operador.Operador;
-import br.ifba.edu.inf011.strategy.NameGeneratingStrategy;
+import br.ifba.edu.inf011.strategy.NameGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,14 +41,14 @@ public class GerenciadorDocumentoModel { // Command: Receiver
     commandContext.redo(this.atual);
   }
 
-  public Documento criarDocumento(NameGeneratingStrategy tipoAutenticador, Privacidade privacidade) throws FWDocumentException {
+  public Documento criarDocumento(NameGenerator nameGenerator, Privacidade privacidade) throws FWDocumentException {
     Operador operador = factory.getOperador();
     Documento documento = factory.getDocumento();
 
     operador.inicializar("jdc", "João das Couves");
     documento.inicializar(operador, privacidade);
 
-    this.autenticador.autenticar(tipoAutenticador, documento);
+    this.autenticador.autenticar(nameGenerator, documento);
     this.repositorio.add(documento);
     this.atual = documento;
 
@@ -95,6 +95,7 @@ public class GerenciadorDocumentoModel { // Command: Receiver
     operador.inicializar("jdc", "João das Couves");
 
     Command macro = new PriorizarMacro(this, operador);
+
     commandContext.addCommand(doc, macro);
   }
 
@@ -105,6 +106,7 @@ public class GerenciadorDocumentoModel { // Command: Receiver
     operador.inicializar("jdc", "João das Couves");
 
     Command macro = new SalvarEAssinarMacro(this, conteudo, operador);
+
     commandContext.addCommand(doc, macro);
   }
 

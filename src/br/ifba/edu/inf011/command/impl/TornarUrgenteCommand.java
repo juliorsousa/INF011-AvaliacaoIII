@@ -15,12 +15,10 @@ public class TornarUrgenteCommand extends AbstractDocumentCommand implements Com
   public void execute() {
     this.previous = this.getDocumentoAtual();
 
-    System.out.println("[Urgencia] Classe do documento antes de tornar urgente: " + this.previous.getClass().getSimpleName());
     this.current = new SeloUrgenciaDecorator(this.previous);
 
     this.atualizarRepositorio(this.previous, this.current);
     this.setDocumentoAtual(this.current);
-    System.out.println("[Urgencia] Classe do documento após tornar urgente: " + this.current.getClass().getSimpleName());
   }
 
   @Override
