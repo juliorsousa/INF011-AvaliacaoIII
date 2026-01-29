@@ -19,12 +19,9 @@ public class SalvarDocumentoCommand extends AbstractDocumentCommand implements C
   @Override
   public void execute() {
     try {
-      this.previous = this.getDocumentoAtual();
-      this.previousContent = this.previous.getConteudo();
-
-      this.current = this.previous;
-
-      this.previous.setConteudo(newContent);
+      this.current = this.getDocumentoAtual();
+      this.previousContent = current.getConteudo();
+      this.current.setConteudo(newContent);
     } catch (FWDocumentException e) {
       throw new RuntimeException("Erro ao salvar o documento: " + e.getMessage(), e);
     }
@@ -38,7 +35,8 @@ public class SalvarDocumentoCommand extends AbstractDocumentCommand implements C
 
   @Override
   public void redo() {
-    this.execute();
+    this.current.setConteudo(newContent);
+    this.setDocumentoAtual(this.current);
   }
 
   @Override

@@ -1,13 +1,12 @@
 package br.ifba.edu.inf011.command.macros;
 
-import br.ifba.edu.inf011.command.Command;
 import br.ifba.edu.inf011.command.Macro;
 import br.ifba.edu.inf011.command.impl.AssinarDocumentoCommand;
 import br.ifba.edu.inf011.command.impl.TornarUrgenteCommand;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
 import br.ifba.edu.inf011.model.operador.Operador;
 
-public class PriorizarMacro extends Macro implements Command { // Command: Macro ConcreteCommand
+public class PriorizarMacro extends Macro { // Command: Macro ConcreteCommand
 
   public PriorizarMacro(
       GerenciadorDocumentoModel manager,
