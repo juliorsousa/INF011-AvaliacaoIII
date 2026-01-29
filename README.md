@@ -25,7 +25,7 @@ estratégia.
 
 ### Exemplo:
 
-```
+```java
 if(tipo == 0)
         numero = "CRI-" + LocalDate.now().getYear() + "-" + documento.hashCode();
     else if(tipo == 1)
