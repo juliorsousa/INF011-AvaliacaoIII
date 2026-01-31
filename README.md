@@ -13,15 +13,14 @@ assume no padrão (ex: Memento, Originator, Caretaker)
 
 ### Identificação:
 
-A primeira questão do projeto envolve a resolução de um problema comportamental envolvendo a classe Autenticador, 
-a qual se responsabiliza de receber um documento e seu tipo para determinar qual o tratamento que esse documento 
-terá em sua geração de número de autenticação, afinal um documento criminal apresenta diferente estratégia de um 
-pessoal. 
+O sistema apresentava uma violação clara do Princípio de Responsabilidade Única (SRP)
+ e do Princípio Aberto/Fechado (OCP). A classe Autenticador centralizava toda a lógica 
+ de formatação de números de autenticação através de uma estrutura rígida de if-else.
 
-Entretanto, para a verificação do tratamento devido é realizado uma sequência de if - else interno, acoplando o 
-código e dificultando um crescimento na quantidade de diferentes estratégias que possam ser utilizadas pelos 
-documentos, pois seria necessário abrir a classe Autenticador sempre que desejasse alterar ou adicionar uma 
-estratégia. 
+Essa abordagem trazia dois problemas principais, sendo eles: uma rigidez, afinal 
+qualquer nova regra de negócio para um tipo de documento exigia a modificação do 
+código fonte da classe Autenticador; além do acoplamento, pois a lógica de geração 
+de nomes estava fundida com a lógica de fluxo de autenticação.
 
 ### Exemplo:
 
@@ -41,10 +40,10 @@ if(tipo == 0)
     documento.setNumero(numero);
 ```
 
-Uma maneira de resolver esse problema seria utilizando o padrão Strategy, pois através dele o 
-Autenticador não é mais o responsável por executar a operação de geração de código auteticador 
-nos documentos, 
-assim somente passa a responsabilidade para o Strategy fornecido pelo próprio cliente.
+Uma maneira de resolver esse problema seria utilizando o padrão Strategy, que foi aplicado 
+transformando algoritmos de geração de nomes em objetos independentes, assim permitindo que 
+a estratégia de autenticação seja trocada em tempo de execução sem alterar o Autenticador. 
+Ao invés de o Autenticador saber como fazer, ele agora apenas delega a quem sabe.
 
 ### Alteração:
 
@@ -71,20 +70,30 @@ AbstractGerenciadorDocumentosUI.
 
 ### Participantes: 
 
-Cliente: `AbstractGerenciadorDocumentosUI`
+Client: Configura o Contexto com a Estratégia correta baseada na escolha do usuário.
 
-Contexto: `Autenticador`
+ - `AbstractGerenciadorDocumentosUI`
 
-Interface: `NameGenerator`
+Context: Usualmente o context manteria uma referẽncia para um Strategy determinado pelo Client, entretanto
+decidimos passar o Strategy como parâmetro do método de autenticar() e o utilizar para executar a lógica a 
+fins de simplicidade, afinal não houve uma necessidade de armazenamento do Strategy.
 
-Implementações concretas:
+ - `Autenticador`
+
+Strategy (Interface): Define o contrato comum para todos os algoritmos de geração de nomes.
+
+ - `NameGenerator`
+
+Concrete Strategy: Implementam o algoritmo específico para cada tipo de documento.
 
  - `ConfidencialNameGenerator`
  - `CriminalNameGenerator`
  - `ExportacaoNameGenerator`
  - `PessoalNameGenerator`
 
-Classe abstrata: `AbstractNameGeneratingStrategy (para sobrescrever o método toString())`
+Abstract class (optional): Foi utilizada somente para evitar duplicação de código (como o toString()).
+
+ - `AbstractNameGeneratingStrategy`
 
 # Questão 2:
 
