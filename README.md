@@ -48,7 +48,7 @@ Ao invés de o Autenticador saber como fazer, ele agora apenas delega a quem sab
 ### Alteração:
 
 Originalmente, a classe abstrata AbstractGerenciadorDocumentosUI possuia uma lista String de 
-tipos de documentação que eram passados para a barra superior da aplicação, então o processo 
+tipos de documentação que eram passados para a barra superior do programa, então o processo 
 de criação de um documento consistia no cliente selecionar o tipo desejado e nível de 
 privacidade, assim o índice dessa lista correspondente ao tipo do documento criado era 
 enviado ao Autenticador que realizava a sequência de if - else anterior para determinar o 
@@ -91,9 +91,12 @@ Concrete Strategy: Implementam o algoritmo específico para cada tipo de documen
  - `ExportacaoNameGenerator`
  - `PessoalNameGenerator`
 
-Abstract class (optional): Foi utilizada somente para evitar duplicação de código (como o toString()).
+Abstract class (optional): Foi utilizada somente para sobrescrever o método toString() nas implementações concretas
+que a extendem, evitando duplicação de código, mas não é parte essencial do padrão.
 
  - `AbstractNameGeneratingStrategy`
+
+
 
 # Questão 2:
 
@@ -117,12 +120,13 @@ Portanto as requisições da questão poderiam ser supridas com esse padrão.
 
 ### Participantes
 
-Command (Interface/Abstract): Definem o contrato básico (execute, undo, redo).
+Command (Interface/Abstract): Definem o contrato básico entre as impelementaoes concretas (execute, undo, redo).
 
  - `Command`
  - `AbstractDocumentCommand`
 
-Concrete Command: Eles sabem como realizar uma ação específica no documento.
+Concrete Command: Encapsula uma ação atômica. Ele não contém a lógica de "como assinar", 
+mas sim o conhecimento de "quem chamar" (o Receiver) e "quais dados passar".
 
  - `AssinarDocumentoCommand`
  - `SalvarDocumentoCommand`
@@ -138,24 +142,31 @@ Para o sistema foram criados dois comandos macro:
  - `SalvarEAssinarMacro`: Encapsula os comandos de salvar e assinar; 
  - `PriorizarMacro`: Encapsula os comandos de tornar urgente e assinar.
 
-Receiver: É quem realmente possui a lógica de negócio e o estado dos documentos.
+Receiver: É o detentor da inteligência de negócio. É nesta classe que os métodos reais de 
+manipulação de documentos (como a lógica de persistência em banco de dados ou algoritmos 
+de criptografia) residem. O Command apenas atua como um "mensageiro" que dispara esses métodos.
 
  - `GerenciadorDocumentoModel`
 
-Invoker: Ele recebe o comando, executa-o e o armazena nas pilhas de desfazer/refazer.
+Invoker: O invoker não executa a lógica, mas chama o execute() do comando recebido, além disso 
+mantém as pilhas de comandos executados. Ao disparar um comando, ele pode registrar automaticamente 
+essa ação em um log cronológico e armazenar o objeto na pilha para permitir que o usuário desfaça 
+a ação posteriormente.
 
  - `CommandContext`
 
-Client: É quem decide qual comando deve ser criado e quando.
+Client: É a origem da solicitação. No contexto da interface gráfica, quando o usuário clica em um botão, 
+o Client instancia o objeto Command específico e o envia para o CommandContext. O Client decide o 
+que deve ser feito e quando, mas delega o como e o rastreio para os outros participantes.
 
  - `MyGerenciadorDocumentoUI`
 
  ### Fluxo de operação
 
-Para o fluxo podemos usar como exemplo o comando macro de salvar e assinar e as classes 
+Para o fluxo podemos usar como exemplo o comando macro de salvar e assinar, além das classes 
 participantes do padrão apresentadas no tópico anterior.
 
-Quando o usuário seleciona a operação de salvar e assinar a classe Client chama o método 
+Quando o usuário seleciona a operação de salvar e assinar, a classe Client chama o método 
 salvarEAssinar(Documento doc, String conteudo) da classe Receiver, que por sua vez cria o 
 respectivo objeto command (nesse exemplo o SalvarEAssinarMacro), pois possue a lógica de 
 negócio. Em seguida, adiciona o comando na classe Invoker reponsável por invocar o método 
@@ -163,7 +174,7 @@ execute() do comando e armazená-lo numa pilha de execução com o intuito de po
 ou refazer a operação dinâmicamente. 
 
 No método execute, o comando realiza as operações nele programadas, nesse exemplo são criados 
-internamente no SalvarEAssinarMacro um SalvarDocumentoCommand e um SalvarDocumentoCommand que 
+internamente no SalvarEAssinarMacro um SalvarDocumentoCommand e um AssinarDocumentoCommand que 
 têm seus métodos execute() também chamados.
 
 ### Detalhes
