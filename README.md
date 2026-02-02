@@ -88,6 +88,15 @@ que a extendem, evitando duplicação de código, mas não é parte essencial do
  - `AbstractNameGeneratingStrategy`
 
 
+| Classe                           | Papel                                                 | Padrão              |
+| -------------------------------- | ----------------------------------------------------- | ------------------- |
+| AbstractGerenciadorDocumentosUI  | Client – seleciona estratégia de geração de número    | Strategy            |
+| Autenticador                     | Context – delega geração de número ao Strategy        | Strategy            |
+| NameGenerator                    | Strategy – interface de geração de números            | Strategy            |
+| ConfidencialNameGenerator, etc   | ConcreteStrategy – implementações específicas         | Strategy            |
+| AbstractNameGeneratingStrategy   | Classe abstrata opcional para código comum            | Strategy            |
+
+
 
 # Questão 2:
 
@@ -190,4 +199,14 @@ Padrão Composite nos macros:
  - `AssinarDocumentoCommand`: Classe leaf
 
 Assim, as classes que extendem Macro são composites e aquelas que extendem AssinarDocumentoCommand são leafs.
+
+
+| Classe                           | Papel                                                 | Padrão              |
+| -------------------------------- | ----------------------------------------------------- | ------------------- |
+| Command, AbstractDocumentCommand | Interface / abstrata para comandos                    | Command             |
+| AssinarDocumentoCommand, etc     | ConcreteCommand – ações atômicas                      | Command             |
+| MacroCommand                     | Composite – sequência de comandos                     | Command + Composite |
+| GerenciadorDocumentoModel        | Receiver – lógica de negócio                          | Command             |
+| CommandContext                   | Invoker – executa, registra e mantém pilhas Undo/Redo | Command             |
+| MyGerenciadorDocumentoUI         | Client – decide qual comando executar                 | Command             |
 
