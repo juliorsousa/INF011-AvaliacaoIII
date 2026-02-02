@@ -87,6 +87,7 @@ que a extendem, evitando duplicação de código, mas não é parte essencial do
 
  - `AbstractNameGeneratingStrategy`
 
+### Resumo:
 
 | Classe                           | Papel                                                 | Padrão              |
 | -------------------------------- | ----------------------------------------------------- | ------------------- |
@@ -95,8 +96,6 @@ que a extendem, evitando duplicação de código, mas não é parte essencial do
 | NameGenerator                    | Strategy – interface de geração de números            | Strategy            |
 | ConfidencialNameGenerator, etc   | ConcreteStrategy – implementações específicas         | Strategy            |
 | AbstractNameGeneratingStrategy   | Classe abstrata opcional para código comum            | Strategy            |
-
-
 
 # Questão 2:
 
@@ -200,6 +199,7 @@ Padrão Composite nos macros:
 
 Assim, as classes que extendem Macro são composites e aquelas que extendem AssinarDocumentoCommand são leafs.
 
+### Resumo:
 
 | Classe                           | Papel                                                 | Padrão              |
 | -------------------------------- | ----------------------------------------------------- | ------------------- |
@@ -209,4 +209,3 @@ Assim, as classes que extendem Macro são composites e aquelas que extendem Assi
 | GerenciadorDocumentoModel        | Receiver – lógica de negócio                          | Command             |
 | CommandContext                   | Invoker – executa, registra e mantém pilhas Undo/Redo | Command             |
 | MyGerenciadorDocumentoUI         | Client – decide qual comando executar                 | Command             |
-
