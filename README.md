@@ -1,12 +1,3 @@
-• O nome do padrão de projeto.
-
-• Uma breve justificativa para sua escolha.
-
-• A identificação clara de cada classe do projeto e qual papel (participante) ela
-assume no padrão (ex: Memento, Originator, Caretaker)
-
----
-
 # Questão 1:
 
 ## Padrão: Strategy Pattern
@@ -91,7 +82,7 @@ Concrete Strategy: Implementam o algoritmo específico para cada tipo de documen
  - `ExportacaoNameGenerator`
  - `PessoalNameGenerator`
 
-Abstract class (optional): Foi utilizada somente para sobrescrever o método toString() nas implementações concretas
+Abstract class (opcional): Foi utilizada somente para sobrescrever o método toString() nas implementações concretas
 que a extendem, evitando duplicação de código, mas não é parte essencial do padrão.
 
  - `AbstractNameGeneratingStrategy`
@@ -120,7 +111,7 @@ Portanto as requisições da questão poderiam ser supridas com esse padrão.
 
 ### Participantes
 
-Command (Interface/Abstract): Definem o contrato básico entre as impelementaoes concretas (execute, undo, redo).
+Command (Interface/Abstract): Definem o contrato básico entre as implementações concretas (execute, undo, redo).
 
  - `Command`
  - `AbstractDocumentCommand`
